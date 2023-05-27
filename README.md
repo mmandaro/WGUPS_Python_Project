@@ -19,3 +19,9 @@ Project Requirements:
 -Utilize a self-adjusting algorithm to determine a route for the trucks to deliver packages on time. This project implements the nearest neighbor
 algorithm.
 
+Environment:
+•	Python version 3.11.2 for macOs
+•	Written in PyCharm IDE version 3.10
+
+
+
