@@ -1,12 +1,13 @@
-import csv  # imports pythons built in csv module so we can open and read files
+import csv
 
-# this function takes the addresses from the address csv file and returns it as a list
-def loadaddressdata():
-    with open("WGUPS_Address_File.csv", 'r') as addressdata_file:
-        addressdata_csv = csv.reader(addressdata_file)
-        addressdata = list(addressdata_csv)
-        addressdata[0][0] = '0'
 
-        return addressdata
+def load_address_data():
+    """Function that takes the addresses from the address csv file and returns them as a list."""
+    with open("WGUPS_Address_File.csv", 'r') as address_data_file:
+        address_data_csv = csv.reader(address_data_file)
+        address_data = list(address_data_csv)
+        address_data[0][0] = '0'
+
+        return address_data
 
 

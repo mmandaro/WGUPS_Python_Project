@@ -12,7 +12,7 @@ Project Requirements:
 
 -Use a self adjusting data structure to store package data. This project implements a chaining hash table.
 
--Ensure the chosen self adjusting data struucture has functions to insert data, update data, delete data, and look up data.
+-Ensure the chosen self adjusting data structure has functions to insert data, update data, delete data, and look up data.
 
 -Provide an interface for the user to view the status and info of any package at any time, and the total mileage traveled by all trucks. 
 
@@ -20,7 +20,7 @@ Project Requirements:
 algorithm.
 
 Environment:
-•	Python version 3.11.2 for macOs
+•	Python version 3.11.2 for macOS
 •	Written in PyCharm IDE version 3.10
 
 
