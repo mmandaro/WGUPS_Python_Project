@@ -1,29 +1,37 @@
-# define a function that will return the minimum distance from trucks current address to its package addresses
-from getAddress import getaddress
-from getDistance import getdistance
-
-def get_min_distance(truck_address, truck_packages, addressdata, distancedata, chaining_hashtable):
-    minimum_distance = 9999  # initialize min distance to a large number so the if statement will execute at least once
-
-    truck_address_index = getaddress(truck_address, addressdata)  # get the index for the trucks current address
+from getAddress import get_address
+from getDistance import get_distance
 
 
-    for package_id in truck_packages:  # iterate through each package ID in the truck
-        # assigns package address with the address for the package ID
+def get_min_distance(truck_address, truck_packages, address_data, distance_data, chaining_hashtable):
+    """Function that will return the minimum distance from truck's current address to its closest package address."""
+
+    # Initialize min distance to a large number so the if statement will execute at least once
+    minimum_distance = 9999
+
+    # Get the index for the trucks current address
+    truck_address_index = get_address(truck_address, address_data)
+
+    # Iterate through each package ID in the truck
+    for package_id in truck_packages:
+        # Assigns package address with the address for the current package ID
         package_address = chaining_hashtable.search(package_id).address
 
-        package_index = getaddress(package_address, addressdata)  # gets the index for the package
+        # Gets the index for the package
+        package_index = get_address(package_address, address_data)
 
-        # get the distance between trucks current location and the package delivery address
-        distance = getdistance(distancedata, truck_address_index, package_index)
+        # Get the distance between trucks current location and the package delivery address
+        distance = get_distance(distance_data, truck_address_index, package_index)
 
+        # Branch that is taken if a new minimum distance is found
+        if distance <= minimum_distance:
+            # Keep the address for the minimum distance package
+            package_address_final = package_address
 
-        if distance <= minimum_distance:  # if branch that is taken if a new minimum distance is found
-            package_address_final = package_address  # keep the address for the minimum distance package
+            # Overwrite minimum distance so that the true minimum is kept
+            minimum_distance = distance
 
-            minimum_distance = distance  # overwrite minimum distance so that the true minimum is kept
+            # Package ID for the minimum distance package
+            package_id_min = package_id
 
-            package_id_min = package_id  # package ID for the minimum distance package
-
-    return [package_id_min, package_address_final, minimum_distance]  # returns a list with the address ID/ address
-    # that's min distance away and the distance to that address from the trucks current address
+    # Returns list with package & address info including the distance from truck's current address to next address
+    return [package_id_min, package_address_final, minimum_distance]

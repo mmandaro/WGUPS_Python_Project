@@ -1,58 +1,75 @@
-# a function that will use the nearest neighbor algorithm to determine the trucks delivery route
-
-from getDistance import getdistance
+from getDistance import get_distance
 from get_min_distance import get_min_distance
-from getAddress import getaddress
+from getAddress import get_address
 import datetime
 
-def deliver_package(truck, chaining_hash_table, addressdata, distancedata):
-    time_sum = truck.depart_time  # initialize a variable that will track the total time for deliveries
 
-    current_address = truck.address  # initialize the current address to the trucks starting address
+def deliver_package(truck, chaining_hash_table, address_data, distance_data):
+    """Function that uses the nearest neighbor algorithm to determine the trucks delivery route."""
 
-    # update the packages that are on the truck to en route and set their depart time to the trucks depart time
+    # Initialize a variable that will track the total time for deliveries
+    time_sum = truck.depart_time
+
+    # Initialize the current address to the trucks starting address
+    current_address = truck.address
+
+    # Update the packages that are on the truck to en route and set their depart time to the trucks depart time
     for item in truck.packages:
         chaining_hash_table.search(item).current_status = "En Route"
         chaining_hash_table.search(item).depart_time = truck.depart_time
 
-    while (len(truck.packages)) > 0:  # iterates so long as there are packages on the truck
-        # finds the closest destination using nearest neighbor algorithm
-        min_distance_list = get_min_distance(current_address, truck.packages, addressdata, distancedata,
-                                        chaining_hash_table)  # gets the ID, address, and distance to nearest address
+    # Iterates so long as there are packages on the truck
+    while (len(truck.packages)) > 0:
 
-        next_address_ID = min_distance_list[0]  # the package ID of the nearest address from the list above
+        # Finds the closest destination using nearest neighbor algorithm
+        min_distance_list = get_min_distance(current_address, truck.packages, address_data, distance_data,
+                                             chaining_hash_table)
 
-        next_address = min_distance_list[1]  # the string address of the nearest address from the list above
+        # The package ID of the nearest address from the list above
+        next_address_ID = min_distance_list[0]
 
-        distance_to_next = min_distance_list[2]  # the actual distance from current address to next address
+        # The string address of the nearest address from the list above
+        next_address = min_distance_list[1]
 
-        truck.mileage += distance_to_next  # add the miles traveled to next address to total truck mileage
+        # The actual distance from current address to next address
+        distance_to_next = min_distance_list[2]
 
-        # how long it takes to get from current address to next
+        # Add the miles traveled to next address to total truck mileage
+        truck.mileage += distance_to_next
+
+        # How long it takes to get from current address to next
         time_to_deliver = datetime.timedelta(hours=(distance_to_next / truck.speed))
 
-        time_sum += time_to_deliver  # keeps track of total time
-        chaining_hash_table.search(next_address_ID).arrive_time = time_sum  # updates arrival time for the package
+        # Keeps track of total time
+        time_sum += time_to_deliver
 
-        chaining_hash_table.search(next_address_ID).current_status = 'Delivered'  # updates delivery status for package
+        # Updates arrival time for the package
+        chaining_hash_table.search(next_address_ID).arrive_time = time_sum
 
-        truck.packages.remove(next_address_ID)  # remove the package from the truck list, as it is delivered
+        # updates delivery status for package
+        chaining_hash_table.search(next_address_ID).current_status = 'Delivered'
+
+        # Remove the package from the truck list, as it is delivered
+        truck.packages.remove(next_address_ID)
 
         if len(truck.packages) > 1:
-            current_address = next_address  # now that package has been delivered, update current address
+            # Now that package has been delivered, update current address
+            current_address = next_address
 
-    hub_address_index = getaddress(truck.address, addressdata)  # gets the hubs address index so we can get the distance
+    # Gets hubs address index, so we can get the distance
+    hub_address_index = get_address(truck.address, address_data)
 
-    current_address_index = getaddress(current_address, addressdata)  # gets the current address index
+    # Gets the current address index
+    current_address_index = get_address(current_address, address_data)
+
     # get the distance to return to hub
-    distance_to_hub = getdistance(distancedata, current_address_index, hub_address_index)
+    distance_to_hub = get_distance(distance_data, current_address_index, hub_address_index)
 
-    truck.mileage += distance_to_hub # return truck to hub and update miles
+    # Return truck to hub and update miles
+    truck.mileage += distance_to_hub
 
-    time_sum += datetime.timedelta(hours=(distance_to_hub / truck.speed))  # getting the time the truck is back at hub
+    # Getting the time the truck is back at hub
+    time_sum += datetime.timedelta(hours=(distance_to_hub / truck.speed))
 
-    return time_sum  # returning the time the truck gets back to the hub
-
-
-
-
+    # Returning the time the truck gets back to the hub
+    return time_sum
