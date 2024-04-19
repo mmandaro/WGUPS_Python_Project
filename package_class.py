@@ -14,8 +14,8 @@ class Package:
 
     def __str__(self):
         """Allows package information to be printed neatly."""
-        return "%s, %s, %s, %s, %s, %s, %s, %s, %s, %s" % (self.package_id, self.address, self.city, self.state,
-                                                           self.zipcode, self.deadline,
-                                                           self.mass, self.current_status, self.depart_time,
-                                                           self.arrive_time)
+        return f"Package {self.package_id}:\n" \
+               f"Address: {self.address}, {self.city}, {self.state}, {self.zipcode}\n"\
+               f"Deadline: {self.deadline}, Mass: {self.mass}\n" \
+               f"Status: {self.current_status}, Depart Time: {self.depart_time}, Arrive Time: {self.arrive_time}\n"
 
