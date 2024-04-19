@@ -6,6 +6,9 @@ from loadAddressData import load_address_data
 from hashtable import ChainingHashTable
 from truck_class import Truck
 from deliver_package import deliver_package
+from display_user_interface import display_user_interface
+from print_mileage import print_mileage
+from get_next_input import get_next_input
 
 
 # Initialize a chaining hash table
@@ -45,15 +48,8 @@ end_time_truck2 = deliver_package(truck2, package_hash, address_data, distance_d
 # Deliver truck 3's packages and save the ending time
 end_time_truck3 = deliver_package(truck3, package_hash, address_data, distance_data)
 
-# User Interface:
-print("*****************************************")
-print("Welcome to WGUPS Package Delivery Tracker")
-print("Please Select An Option:")
-print("Press 1 to Check All Package Status and Total Truck Mileage")
-print("Press 2 to Get a Single Package Status With a Time")
-print("Press 3 to Get All Package Status With a Time")
-print("Press 4 to Exit")
-print("*****************************************")
+# Display the user interface
+display_user_interface()
 
 # Gets the users input
 user_choice = int(input("Input: "))
@@ -79,20 +75,14 @@ while user_choice != 4:
             # Each pass of the loop will access the package object from the hash table
             package = package_hash.search(i)
             # Prints the package information
-            print("Package ID: %d, " % i, "Address: " + str(package.address) + ", " + str(package.city) + ", " +
-                  str(package.state) + ", " + str(package.zipcode) + ", " + str(package.mass) + " kg, STATUS: " +
-                  str(package.current_status) + ", DEPART: " + str(package.depart_time) + ", ARRIVE: " +
-                  str(package.arrive_time))
+            print(package)
         # Prints the individual trucks mileage as well as the total mileage
-        print("Truck 1 Mileage: %d" % truck1.mileage)
-        print("Truck 2 Mileage: %d" % truck2.mileage)
-        print("Truck 3 Mileage: %d" % truck3.mileage)
-        print("TOTAL MILEAGE: %d" % (truck1.mileage + truck2.mileage + truck3.mileage))
+        print_mileage(truck1, truck2, truck3)
 
         # Gets new user input after the above loop is complete
-        user_choice = int(input("Input: "))
+        user_choice = get_next_input()
 
-        # Branch for user choice number 2, allowing a single package to be selected for given time
+    # Branch for user choice number 2, allowing a single package to be selected for given time
     elif user_choice == 2:
         # Gets user input of package ID to look up
         user_choice_package = int(input("Enter the package ID for the package: "))
@@ -112,48 +102,27 @@ while user_choice != 4:
 
             # If the arrival time of the package is less than the users input time, then the package has arrived
             if chosen_package.arrive_time <= user_timedelta:
-                print("Package ID: %d, " % user_choice_package, "Address: " + str(chosen_package.address) + ", " +
-                      str(chosen_package.city) + ", " + str(chosen_package.state) + ", " + str(chosen_package.zipcode) +
-                      ", " + str(chosen_package.mass) + " kg, STATUS: " + str(chosen_package.current_status) +
-                      ", DEPART: " + str(chosen_package.depart_time) + ", ARRIVE: " + str(chosen_package.arrive_time))
+                chosen_package.current_status = "Delivered"
+                print(chosen_package)
                 # Gets the next input from the user
-                user_choice = int(input("Choose what to do next\n"
-                                        "1 - Display all packages and truck mileage\n"
-                                        "2 - Single package lookup for given time\n"
-                                        "3 - All package display for given time\n"
-                                        "4 - Exit the program\n"
-                                        "Input: "))
+                user_choice = get_next_input()
 
             # If the arrival time is greater than the users input time, the package could be en route or at hub
             elif chosen_package.arrive_time > user_timedelta:
                 # If the departure time is less than or equal to user input time, the package is en route
                 if chosen_package.depart_time <= user_timedelta:
-                    print("Package ID: %d, " % user_choice_package, "Address: " + str(chosen_package.address) + ", " +
-                          str(chosen_package.city) + ", " + str(chosen_package.state) + ", " + str(
-                        chosen_package.zipcode) + ", " + str(chosen_package.mass) + " kg, STATUS: En Route" +
-                          ", DEPART: " + str(chosen_package.depart_time) + ", ARRIVE: " + "N/A")
+                    chosen_package.current_status = "En Route"
+                    print(chosen_package)
                     # Gets the next input from the user
-                    user_choice = int(input("Choose what to do next\n"
-                                            "1 - Display all packages and truck mileage\n"
-                                            "2 - Single package lookup for given time\n"
-                                            "3 - All package display for given time\n"
-                                            "4 - Exit the program\n"
-                                            "Input: "))
+                    user_choice = get_next_input()
 
                 # If the departure time is greater than the user input time, the package is still at the hub
                 elif chosen_package.depart_time > user_timedelta:
-                    print("Package ID: %d, " % user_choice_package, "Address: " + str(chosen_package.address) + ", " +
-                          str(chosen_package.city) + ", " + str(chosen_package.state) + ", " + str(
-                        chosen_package.zipcode) +
-                          ", " + str(chosen_package.mass) + " kg, STATUS: At Hub" + ", DEPART: " +
-                          str(chosen_package.depart_time) + ", ARRIVE: " + "N/A")
+                    chosen_package.current_status = "At Hub"
+                    print(chosen_package)
                     # Gets the next input from the user
-                    user_choice = int(input("Choose what to do next\n"
-                                            "1 - Display all packages and truck mileage\n"
-                                            "2 - Single package lookup for given time\n"
-                                            "3 - All package display for given time\n"
-                                            "4 - Exit the program\n"
-                                            "Input: "))
+                    user_choice = get_next_input()
+
         # If invalid package ID
         else:
             # Loops as long as ID is invalid and gets new ID
@@ -177,31 +146,20 @@ while user_choice != 4:
 
             # If the arrival time of the package is less than the users input time, then the package has arrived
             if package.arrive_time <= user_timedelta:
-                print("Package ID: %d, " % package.package_id, "Address: " + str(package.address) + ", " +
-                      str(package.city) + ", " + str(package.state) + ", " + str(package.zipcode) +
-                      ", " + str(package.mass) + " kg, STATUS: " + str(package.current_status) +
-                      ", DEPART: " + str(package.depart_time) + ", ARRIVE: " + str(package.arrive_time))
+                package.current_status = "Delivered"
+                print(package)
 
             # If the arrival time is greater than the users input time, the package could be en route or at hub
             elif package.arrive_time > user_timedelta:
                 # If the departure time is less than or equal to user input time, the package is en route
                 if package.depart_time <= user_timedelta:
-                    print("Package ID: %d, " % package.package_id, "Address: " + str(package.address) + ", " +
-                          str(package.city) + ", " + str(package.state) + ", " + str(package.zipcode) + ", " +
-                          str(package.mass) + " kg, STATUS: En Route" + ", DEPART: " + str(package.depart_time) +
-                          ", ARRIVE: " + "N/A")
+                    package.current_status = "En Route"
+                    print(package)
 
                 # if the departure time is greater than the user input time, the package is still at the hub
                 elif package.depart_time > user_timedelta:
-                    print("Package ID: %d, " % package.package_id, "Address: " + str(package.address) + ", " +
-                          str(package.city) + ", " + str(package.state) + ", " + str(package.zipcode) + ", " +
-                          str(package.mass) + " kg, STATUS: At Hub" + ", DEPART: " + str(package.depart_time) +
-                          ", ARRIVE: " + "N/A")
+                    package.current_status = "At Hub"
+                    print(package)
 
         # Gets the next input from the user
-        user_choice = int(input("Choose what to do next\n"
-                                "1 - Display all packages and truck mileage\n"
-                                "2 - Single package lookup for given time\n"
-                                "3 - All package display for given time\n"
-                                "4 - Exit the program\n"
-                                "Input: "))
+        user_choice = get_next_input()
