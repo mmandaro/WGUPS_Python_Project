@@ -13,7 +13,7 @@ def deliver_package(truck, chaining_hash_table, address_data, distance_data):
     # Initialize the current address to the trucks starting address
     current_address = truck.address
 
-    # Update the packages that are on the truck to en route and set their depart time to the trucks depart time
+    # Update the packages that are on the truck to en route and set their departure time to the trucks depart time
     for item in truck.packages:
         chaining_hash_table.search(item).current_status = "En Route"
         chaining_hash_table.search(item).depart_time = truck.depart_time
