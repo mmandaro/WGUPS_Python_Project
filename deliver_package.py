@@ -1,6 +1,6 @@
-from getDistance import get_distance
+from get_distance import get_distance
 from get_min_distance import get_min_distance
-from getAddress import get_address
+from get_address import get_address
 import datetime
 
 
