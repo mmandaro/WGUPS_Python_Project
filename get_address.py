@@ -8,3 +8,5 @@ def get_address(address, address_data):
             # Return the address index as integer type
             return int(row[0])
 
+    # If no matching address is found, return None
+    return None

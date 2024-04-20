@@ -1,8 +1,8 @@
 import datetime
 from package_class import Package
-from loadPackageData import load_package_data
-from loadDistanceData import load_distance_data
-from loadAddressData import load_address_data
+from load_package_data import load_package_data
+from load_distance_data import load_distance_data
+from load_address_data import load_address_data
 from hashtable import ChainingHashTable
 from truck_class import Truck
 from deliver_package import deliver_package

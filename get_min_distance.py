@@ -1,5 +1,5 @@
-from getAddress import get_address
-from getDistance import get_distance
+from get_address import get_address
+from get_distance import get_distance
 
 
 def get_min_distance(truck_address, truck_packages, address_data, distance_data, chaining_hashtable):
