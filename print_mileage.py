@@ -1,4 +1,5 @@
 def print_mileage(truck1, truck2, truck3):
+    """Function that neatly prints the mileage for the three trucks, as well as the total."""
     print("Truck 1 Mileage: %d" % truck1.mileage)
     print("Truck 2 Mileage: %d" % truck2.mileage)
     print("Truck 3 Mileage: %d" % truck3.mileage)
