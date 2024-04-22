@@ -16,8 +16,9 @@ class Truck:
 
     def __str__(self):
         """Allows the truck attributes to be printed neatly."""
-        return "%s, %s, %s, %s, %s, %s" % (self.depart_time, self.mileage, self.packages, self.address, self.carry_max,
-                                           self.speed)
+        return f"Depart Time: {self.depart_time}, Mileage: {self.mileage}, Packages: {self.packages}"\
+               f"Address: {self.address}, Carry Max: {self.carry_max,}, Speed: {self.speed}"
+
 
 
 
